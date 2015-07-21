@@ -18,17 +18,12 @@ Meteor.publish('weeklylimit', function () {
     return Settings.find({_id:"weeklylimit"});
 });
 
-Houston.add_collection(Settings);
-Houston.add_collection(Movies);
-Houston.add_collection(TV);
-Houston.add_collection(Version);
-
-
 if (!(Settings.findOne({_id: "couchpotatosetting"}))) {
     Settings.insert({
         _id: "couchpotatosetting",
         service: "CouchPotato",
-        api: "http://192.168.0.1:5050/api/abcdef0123456789/",
+        host: "192.168.0.1:5050",
+        api: "abcdef0123456789",
         enabled: false
     });
 };
@@ -66,7 +61,8 @@ if (!(Settings.findOne({_id: "sickragesetting"}))) {
     Settings.insert({
         _id: "sickragesetting",
         service: "SickRage",
-        api: "http://192.168.0.1:8081/api/abcdef0123456789/",
+        host: "192.168.0.1:8081",
+        api: "abcdef0123456789",
         enabled: false
     });
 };
@@ -103,6 +99,13 @@ if (!(Version.findOne({_id:"versionInfo"}))) {
 
 
 Meteor.methods({
+	'adminCreated': function ( options ) {
+        if ( Meteor.users.find().count() === 0 ) {
+	        return false;
+		}else{
+			return true;
+		};
+    },
     'pushService' : function (media, year, plexUser, type) {
         check(media, String);
         check(year, String);
@@ -160,24 +163,26 @@ Meteor.methods({
     },
     'searchCP' : function (id, imdb, movie, year, puser) {
         if (Settings.findOne({_id:"couchpotatosetting"}).enabled) {
-            var cpAPI = Settings.findOne({_id:"couchpotatosetting"}).api;
+
+             var cpHOST = Settings.findOne({_id:"couchpotatosetting"}).host;
+			 var cpAPI = Settings.findOne({_id:"couchpotatosetting"}).api;
 
             //Workaround to allow self-signed SSL certs, however can be dangerous and should not be used in production, looking into better way
             //But it's possible there's nothing much I can do
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
             try {
-                var status = Meteor.http.call("GET", cpAPI  + "app.available", {timeout:5000});
+                var status = Meteor.http.call("GET", cpHOST+'/api/'+cpAPI  + "/app.available", {timeout:5000});
             }
             catch (error) {
                 console.log(error)
             }
 
-            var initSearch = Meteor.http.call("GET", cpAPI  + "media.get/", {params: {"id": imdb}});
+            var initSearch = Meteor.http.call("GET", cpHOST+'/api/'+cpAPI  + "/media.get/", {params: {"id": imdb}});
 
             if (initSearch['data']['media'] === null) {
                 //Movie is not in CP
-                Meteor.http.call("POST", cpAPI  + "movie.add/", {params: {"identifier": imdb}});
+                Meteor.http.call("POST", cpHOST+'/api/'+cpAPI  + "/movie.add/", {params: {"identifier": imdb}});
                 //var postAdd = Meteor.http.call("GET", cpAPI  + "media.get/", {params: {"id": imdb}});
                 //var json = JSON.parse(postAdd.content);
                 //var movie = json['media']['title'];
@@ -242,18 +247,31 @@ Meteor.methods({
         };
     },
     'checkCP' : function () {
+	    var cpHOST = Settings.findOne({_id:"couchpotatosetting"}).host;
         var cpAPI = Settings.findOne({_id:"couchpotatosetting"}).api;
-        var status = Meteor.http.call("GET", cpAPI  + "app.available", {timeout:5000});
+
+		try {
+            var status = Meteor.http.get( cpHOST+'/api/'+cpAPI  + "/app.available", {timeout:5000});
 
         //Workaround to allow self-signed SSL certs, however can be dangerous and should not be used in production, looking into better way
         //But it's possible there's nothing much I can do
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-        return (status['data']['success']);
+             if(status.data && status.data.success==true){
+                 return true;
+             } else if(status['statusCode']==200) {
+                 return status['statusCode'];
+             }
 
-    },
-    'checkCPEnabled' : function () {
-        return Settings.findOne({_id:"couchpotatosetting"}).enabled;
+         }
+        catch (error) {
+			throw new Meteor.Error(500, 'bad host');
+           // console.log(error)
+            return false;
+        }
+
+        return false;
+
     },
     'checkPlexEnabled' : function () {
         return Settings.findOne({_id:"plexsetting"}).enabled;
@@ -348,7 +366,8 @@ Meteor.methods({
         if (Settings.findOne({_id:"sickragesetting"}).enabled){
 
             //If enabled check if can connect to it
-            var srAPI = Settings.findOne({_id:"sickragesetting"}).api;
+            var srHOST = Settings.findOne({_id:"sickragesetting"}).host;
+			var srAPI = Settings.findOne({_id:"sickragesetting"}).api;
             var episodeStatus = "skipped";
             if (getAll === true) {
                 episodeStatus = "wanted";
@@ -359,7 +378,7 @@ Meteor.methods({
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
             try {
-                var status = Meteor.http.call("GET", srAPI  + "?cmd=sb.ping", {timeout:5000});
+                var status = Meteor.http.call("GET", srHOST+'/api/'+srAPI + "?cmd=sb.ping", {timeout:5000});
             }
             catch (error) {
                 //If can't connect error out
@@ -367,16 +386,16 @@ Meteor.methods({
                 return "error";
             }
             //If can connect see if series is in DB already
-            if (Meteor.http.call("GET", srAPI + "?cmd=show&tvdbid=" + tvdb)['data']['result'] === "failure") {
+            if (Meteor.http.call("GET", srHOST+'/api/'+srAPI + "?cmd=show&tvdbid=" + tvdb)['data']['result'] === "failure") {
                 //If not in DB add to DB
-                var sickRageAdd = Meteor.http.call("GET", srAPI  + "?cmd=show.addnew&tvdbid=" + tvdb + "&status=" + episodeStatus);
+                var sickRageAdd = Meteor.http.call("GET", srHOST+'/api/'+srAPI + "?cmd=show.addnew&tvdbid=" + tvdb + "&status=" + episodeStatus);
 
                 if (sickRageAdd['data']['result'] === "success") {
                     return "added";
                 } else {
                     return "error"
                 }
-            } else if (Meteor.http.call("GET", srAPI + "?cmd=show&tvdbid=" + tvdb)['data']['result'] === "success") {
+            } else if (Meteor.http.call("GET", srHOST+'/api/'+srAPI + "?cmd=show&tvdbid=" + tvdb)['data']['result'] === "success") {
                 //If in DB let user know
                 return "downloaded";
             } else {
@@ -385,17 +404,32 @@ Meteor.methods({
 
         }
     },
-    'checkSREnabled' : function () {
-        return Settings.findOne({_id:"sickragesetting"}).enabled;
-    },
     'checkSR' : function () {
+	    var srHOST = Settings.findOne({_id:"sickragesetting"}).host;
         var srAPI = Settings.findOne({_id:"sickragesetting"}).api;
-        var status = Meteor.http.call("GET", srAPI + "?cmd=sb.ping", {timeout:5000});
+
+		try {
+            var status = Meteor.http.get( srHOST+'/api/'+srAPI + "?cmd=sb.ping", {timeout:5000});
 
         //Workaround to allow self-signed SSL certs, however can be dangerous and should not be used in production, looking into better way
         //But it's possible there's nothing much I can do
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-        return (status['data']['result']);
+
+
+			//return status;
+             if(status.data  && status.data.result == 'success' ){
+                return true;
+             }else if(status['statusCode']==200) {
+			 	return status['statusCode'];
+             }
+
+         }
+        catch (error) {
+			throw new Meteor.Error(500, 'bad host');
+	        //If can't connect error out
+           // console.log(error)
+            return false;
+        }
 
     },
     'checkSO' : function () {
@@ -420,9 +454,6 @@ Meteor.methods({
         }
 
         return false;
-    },
-    'checkSOEnabled' : function () {
-        return Settings.findOne({_id:"sonarrsetting"}).enabled;
     },
     'searchSonarr' : function(id, tvdb, title, year, puser, getAll, totalSeasons) {
 
@@ -528,8 +559,7 @@ Meteor.methods({
         return currentBranch.branch();
     },
     'checkForUpdate' : function () {
-        //var branch = Meteor.call('getBranch');
-        var branch = "dev";
+        var branch = Meteor.call('getBranch');
         Version.update({_id:"versionInfo"},
             {$set: {
                 branch: branch,
@@ -571,3 +601,4 @@ SyncedCron.add({
 });
 
 SyncedCron.start();
+

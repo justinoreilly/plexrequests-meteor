@@ -1,0 +1,37 @@
+<template name="plex">
+	<h3 class="service-label"> {{> afFieldInput name="enabled" type="boolean-checkbox" }} {{service}}</h3>
+		  <p class="help-block">Service information</p>
+   {{#if enabled}}
+   	<label for="api" class="col-sm-3 control-label text-right">Plex Auth Key</label>
+			     <div class="col-sm-9">
+				 {{plexAuth}}
+			     {{> afFieldInput name="api" }}
+			          <p class="help-block"><a href="#"  class="show-plex-form"  style="display:none">Get new Auth Key</a>&nbsp;</p>
+	<div class="plexAuth" style="display:none">
+			                        <div class="form-inline">
+			                            <input type="text" class="form-control" placeholder="Plex Username" name="plex-username" id='plex-username' required autofocus>
+			                            <input type="password" class="form-control" placeholder="Plex Password" name="plex-password" id='plex-password' required autofocus>
+			                            <div id="plexsignin" class="btn btn-primary "><i class="fa fa-user fa-fw"></i> Sign In</div>
+			                        </div>
+			                        <div id="plex-error"  class="btn btn-warning" style="display:none">Error connecting to Plex.tv, wrong username or password, please try again</div>
+			                        <p class="help-block">To get started you will need your Plex token. The easiest way is to use the form above to login to your Plex.tv account and we'll do the hard work! Alternative there are instructions [here] showing how to set it up manually.</p>
+
+  </div>
+			    </div>
+
+
+
+	 <div class="col-sm-3 text-right">
+		 Service status:
+
+	 </div>
+	<div class="col-sm-9">
+		<span class="btn btn-primary btn-xs test-service" data-test-btn="checkPlex">Test</span>
+		<p class="help-block">Note: hide test button if fields are empty</p>
+	</div>
+
+
+
+    {{/if}}
+
+</template>

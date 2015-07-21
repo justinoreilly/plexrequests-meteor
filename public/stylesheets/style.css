@@ -2,7 +2,10 @@ h1 {
     font-size: 3.5em;
     color: #df691a;
 }
-
+.nav>li>a:hover, .nav>li>a:focus {
+  color: #FFF;
+   background-color: transparent;
+}
 label, .radio label {
     font-size: 1em;
 }
@@ -21,7 +24,7 @@ label, .radio label {
 }
 
 @media (min-width: 768px) {
-    body {
+    .container {
         padding-top: 60px;
     }
 }
@@ -187,6 +190,15 @@ http://bootsnipp.com/snippets/featured/no-more-tables-respsonsive-table
 	*/
 	#no-more-tables td:before { content: attr(class); }
 }
+
+
+/*Form/setting extra styles*/
+
+.service-label .checkbox{
+	display: inline-block;
+	  margin-left: -27px;
+}
+
 
 /* Center bootstrap modal */
 .modal {

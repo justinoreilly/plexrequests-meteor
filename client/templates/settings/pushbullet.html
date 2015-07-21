@@ -1,0 +1,22 @@
+<template name="pushbullet">
+	<h3 class="service-label"> {{> afFieldInput name="enabled" type="boolean-checkbox" }} {{service}}</h3>
+		 <p class="help-block">Service information</p>
+   {{#if enabled}}
+
+			    <label for="api" class="col-sm-3 control-label">API Key</label>
+			     <div class="col-sm-9">
+
+			     {{> afFieldInput name="api" }}
+			          <p class="help-block"> field description</p>
+
+			    </div>
+                      <div class="col-sm-3  text-right">
+                        Test {{this.service}}:
+                      </div>
+                       <div class="col-sm-9">
+	                        <span class="btn btn-primary btn-xs test-service" data-test-btn="checkPB">Test</span>
+								<p class="help-block">Do we check for correct API?</p>
+
+                      </div>
+  {{/if}}
+</template>

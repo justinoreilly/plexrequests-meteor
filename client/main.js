@@ -9,81 +9,33 @@ Meteor.subscribe('weeklylimit');
 Session.set('searchType', '');
 
 Router.configure({
-    notFoundTemplate: "NotFound"
+   layoutTemplate: 'index'
 });
 
-Router.route('/', function () {
-    this.render('home');
+Router.map(function () {
+  this.route('home', {
+    path: '/',
+  });
+   if (Meteor.userId()) {
+	  this.route('settings');
+	  this.route('about');
+	  //this.route('couchpotato');
+	  //this.route('plex');
+	  //this.route('sickrage');
+	  //this.route('sonarr');
+	  this.route('NotFound');
+
+  }
 });
 
-Router.route('/couchpotato', function () {
-    this.render('couchpotato');
-});
-
-Router.route('/plex', function () {
-    this.render('plex');
-});
-
-Router.route('/sickrage', function () {
-    this.render('sickrage');
-});
-
-Router.route('/sonarr', {
-    name: 'sonarr'
-});
-
-Router.route('/about', {
-    name: 'about'
-});
-
+/*
 Router.route('/settings', {
     name: 'settings'
 });
+*/
 
 Template.body.helpers({
     url: function () {
     return Meteor.absoluteUrl();
     }
-});
-
-Houston.menu({
-    'type': 'link',
-    'use': '/about',
-    'title': 'About',
-    'target': '_blank'
-});
-
-Houston.menu({
-    'type': 'link',
-    'use': '/plex',
-    'title': 'Plex Auth Setup',
-    'target': '_blank'
-});
-
-Houston.menu({
-    'type': 'link',
-    'use': '/couchpotato',
-    'title': 'CouchPotato Status',
-    'target': '_blank'
-});
-
-Houston.menu({
-    'type': 'link',
-    'use': '/sickrage',
-    'title': 'SickRage Status',
-    'target': '_blank'
-});
-
-Houston.menu({
-    'type': 'link',
-    'use': '/sonarr',
-    'title': 'Sonarr Status',
-    'target': '_blank'
-});
-
-Houston.menu({
-    'type': 'link',
-    'use': 'http://plexrequests.8bits.ca',
-    'title': 'Project Site',
-    'target': '_blank'
 });

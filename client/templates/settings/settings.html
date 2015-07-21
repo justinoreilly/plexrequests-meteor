@@ -1,0 +1,59 @@
+<template name="settings">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+			<h1>Settings</h1>
+			 <p class="lead">This page is to help you get up and running with Plex Requests.</p>
+
+
+			 	<h2><strong>Services</strong></h2>
+<!--
+			 	{{#autoForm id="couchpotatoUpdate" class="form-horizontal" type="update" collection="Collections.Settings doc=couchpotatosetting autosave=true}}
+			 		{{ > couchpotato }}
+			 	{{/autoForm}}
+-->
+
+
+
+
+    {{#each settings}}
+<div class="clearfix">
+        {{#autoForm id=makeUniqueID class="form-horizontal" type="update" collection=Collections.Settings doc=this autosave=true}}
+
+	        {{#if equals _id 'couchpotatosetting'}}
+	         	{{ > couchpotato }}
+			{{/if}}
+	        {{#if equals _id 'plexsetting'}}
+			    {{>plex}}
+			{{/if}}
+			{{#if equals _id 'pushbulletsetting'}}
+				{{ > pushbullet }}
+			{{/if}}
+			{{#if equals _id 'sickragesetting'}}
+					{{ > sickrage }}
+			{{/if}}
+			{{#if equals _id 'sonarrsetting'}}
+					{{ > sonarr }}
+			{{/if}}
+
+			{{#if equals _id 'pushoversetting'}}
+				{{ > pushover }}
+			{{/if}}
+
+			{{#if equals _id 'weeklylimit'}}
+				{{ > appsettings }}
+			{{/if}}
+
+
+        {{/autoForm}}
+            </div>
+
+    {{/each}}
+
+
+
+            </div>
+        </div>
+    </div>
+
+</template>
