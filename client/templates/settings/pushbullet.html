@@ -1,13 +1,13 @@
 <template name="pushbullet">
 	<h3 class="service-label"> {{> afFieldInput name="enabled" type="boolean-checkbox" }} {{service}}</h3>
-		 <p class="help-block">Service information</p>
+		 <p class="help-block">Enable PushBullet to receive notifications when new content is requested.</p>
    {{#if enabled}}
 
-			    <label for="api" class="col-sm-3 control-label">API Key</label>
+			    <label for="api" class="col-sm-3 control-label">Access Token</label>
 			     <div class="col-sm-9">
 
 			     {{> afFieldInput name="api" }}
-			          <p class="help-block"> field description</p>
+			          <p class="help-block">PushBullet Settings -> Access Token</p>
 
 			    </div>
                       <div class="col-sm-3  text-right">
@@ -15,7 +15,6 @@
                       </div>
                        <div class="col-sm-9">
 	                        <span class="btn btn-primary btn-xs test-service" data-test-btn="checkPB">Test</span>
-								<p class="help-block">Do we check for correct API?</p>
 
                       </div>
   {{/if}}

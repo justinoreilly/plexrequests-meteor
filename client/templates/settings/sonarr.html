@@ -1,6 +1,6 @@
 <template name="sonarr">
 	<h3 class="service-label"> {{> afFieldInput name="enabled" type="boolean-checkbox" }} {{service}}</h3>
-		  <p class="help-block">Service information</p>
+		  <p class="help-block">Enable Sonarr for automated downloading of TV shows.</p>
    {{#if enabled}}
 
 
@@ -8,7 +8,7 @@
 			     <div class="col-sm-9">
 
 			     {{> afFieldInput name="api" }}
-			       <p class="help-block"> field description</p>
+			       <p class="help-block">URL to your Sonarr server (e.g. http://localhost:8989)</p>
 
 			    </div>
 
@@ -16,7 +16,7 @@
 			     <div class="col-sm-9">
 
 			     {{> afFieldInput name="api_key" }}
-			      <p class="help-block"> field description</p>
+			      <p class="help-block">Sonarr Settings -> General</p>
 			    </div>
 
 
@@ -26,7 +26,7 @@
 			     <div class="col-sm-9">
 
 			     {{> afFieldInput name="qualityProfileId" }}
-			      <p class="help-block"> field description</p>
+			      <p class="help-block">Quality Profile ID</p>
 			    </div>
 
 
@@ -34,7 +34,7 @@
 			     <div class="col-sm-9">
 
 			     {{> afFieldInput name="rootFolderPath" }}
-			     <p class="help-block"> field description</p>
+			     <p class="help-block">Path to TV folder show</p>
 			    </div>
 
 
@@ -42,7 +42,7 @@
 			     <div class="col-sm-9">
 
 			     {{> afQuickField name="seasonFolder" }}
-			      <p class="help-block"> field description</p>
+			      <p class="help-block"></p>
 			    </div>
 
 

@@ -1,6 +1,6 @@
 <template name="couchpotato">
 	<h3 class="service-label"> {{> afFieldInput name="enabled" type="boolean-checkbox" }} {{service}}</h3>
-		  <p class="help-block">To enable CouchPotato integration, please enable above and enter your CouchPotato's server IP/Hostname, port number, and API key.</p>
+		  <p class="help-block">Enable Couch Potato for automated downloading of movies.</p>
    {{#if enabled}}
     			<label for="api" class="col-sm-3 control-label">Host:Port</label>
 			     <div class="col-sm-9">
@@ -20,7 +20,6 @@
                       </div>
                        <div class="col-sm-9">
 	                        <span class="btn btn-primary btn-xs test-service" data-test-btn="checkCP">Test</span>
-								 <p class="help-block">Note: hide test button if fields are empty</p>
 
                       </div>
   {{/if}}

@@ -1,12 +1,12 @@
 <template name="plex">
 	<h3 class="service-label"> {{> afFieldInput name="enabled" type="boolean-checkbox" }} {{service}}</h3>
-		  <p class="help-block">Service information</p>
+		  <p class="help-block">Enable Plex Authentication to limit access to those that you have shared your Plex Media Server with.</p>
    {{#if enabled}}
    	<label for="api" class="col-sm-3 control-label text-right">Plex Auth Key</label>
 			     <div class="col-sm-9">
 				 {{plexAuth}}
 			     {{> afFieldInput name="api" }}
-			          <p class="help-block"><a href="#"  class="show-plex-form"  style="display:none">Get new Auth Key</a>&nbsp;</p>
+			          <p class="help-block"><a href="#" class="show-plex-form">Get new Auth Key</a>&nbsp;</p>
 	<div class="plexAuth" style="display:none">
 			                        <div class="form-inline">
 			                            <input type="text" class="form-control" placeholder="Plex Username" name="plex-username" id='plex-username' required autofocus>
@@ -27,7 +27,6 @@
 	 </div>
 	<div class="col-sm-9">
 		<span class="btn btn-primary btn-xs test-service" data-test-btn="checkPlex">Test</span>
-		<p class="help-block">Note: hide test button if fields are empty</p>
 	</div>
 
 
