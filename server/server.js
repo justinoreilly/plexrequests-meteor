@@ -586,6 +586,9 @@ Meteor.methods({
             Version.update({_id: "versionInfo"},{$set: {updateAvailable: true}});
         }
         return true;
+    },
+    'userCount' : function () {
+        return Meteor.users.find({}).count();
     }
 });
 

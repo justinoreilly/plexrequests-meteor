@@ -5,6 +5,7 @@ Meteor.subscribe('tv');
 Meteor.subscribe('settings');
 Meteor.subscribe('version');
 Meteor.subscribe('weeklylimit');
+Meteor.subscribe('userCount');
 
 Session.set('searchType', '');
 

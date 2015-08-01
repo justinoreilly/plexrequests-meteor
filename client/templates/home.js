@@ -40,3 +40,15 @@ Template.home.events({
         }, 500);
     }
 });
+
+Template.home.onCreated(function(){
+    Meteor.call('userCount', function (err, data) {
+        if (err) {
+            console.log(err);
+            $('.firstRun').show();
+        } else if (data == 0) {
+            $('.firstRun').show();
+        }
+        $('.firstRun').show();
+    });
+});
