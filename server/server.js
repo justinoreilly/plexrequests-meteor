@@ -592,6 +592,12 @@ Meteor.methods({
     }
 });
 
+if (Meteor.call('userCount') != 0) {
+    Accounts.config({
+        forbidClientAccountCreation : true
+    });
+}
+
 SyncedCron.add({
     name: 'Update CP download status',
     schedule: function(parser) {
