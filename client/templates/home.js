@@ -49,6 +49,5 @@ Template.home.onCreated(function(){
         } else if (data == 0) {
             $('.firstRun').show();
         }
-        $('.firstRun').show();
     });
 });
