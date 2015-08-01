@@ -22,6 +22,7 @@ Router.map(function () {
     if (Meteor.userId()) {
         this.route('settings');
         this.route('about');
+        this.route('manage');
         //this.route('couchpotato');
         //this.route('plex');
         //this.route('sickrage');
