@@ -9,23 +9,23 @@ Meteor.subscribe('weeklylimit');
 Session.set('searchType', '');
 
 Router.configure({
-   layoutTemplate: 'index'
+    layoutTemplate: 'index',
+    notFoundTemplate: 'NotFound'
 });
 
 Router.map(function () {
-  this.route('home', {
-    path: '/',
-  });
-   if (Meteor.userId()) {
-	  this.route('settings');
-	  this.route('about');
-	  //this.route('couchpotato');
-	  //this.route('plex');
-	  //this.route('sickrage');
-	  //this.route('sonarr');
-	  this.route('NotFound');
-
-  }
+    this.route('home', {
+        path: '/',
+    });
+       
+    if (Meteor.userId()) {
+        this.route('settings');
+        this.route('about');
+        //this.route('couchpotato');
+        //this.route('plex');
+        //this.route('sickrage');
+        //this.route('sonarr');
+    }
 });
 
 /*
