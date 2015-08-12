@@ -1,9 +1,18 @@
 Template.manage.helpers({
     Movies: function () {
-		  return Movies;
+		  return Movies.find().fetch();
     },
     TV: function () {
         return TV;
+    },
+    onSuccess: function(formType, result) {
+        if (result) {
+          console.log("Success");
+        }
+        console.log("a");
+    },
+    onError: function(formType, error) {
+      console.log("Error -> " + error);
     }
 });
 
@@ -33,7 +42,7 @@ Template.manage.helpers({
                     }
                 },
                 { key: 'user',  label: 'User', cellClass: 'User', },
-                { label: 'Delete', 
+                { label: 'Delete',
                     fn: function () {
                         return new Spacebars.SafeString('<a href="#" class="delete">X</a>');
                     }

@@ -2,7 +2,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
-                {{> reactiveTable collection=Movies settings=settings }}
+                <!-- {{> reactiveTable collection=Movies settings=settings }} -->
+              <div class="movieList">
+                <h2>Movies Requested</h2>
+                {{#each Movies}}
+                  <div class="row">
+                    <div class="col-xs-8">
+                      {{> movie}}
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
+
             </div>
         </div>
     </div>

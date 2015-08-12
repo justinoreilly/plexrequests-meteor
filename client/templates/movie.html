@@ -1,0 +1,8 @@
+<template name="movie">
+  {{#autoForm collection="Movies" doc=movieDoc id=formId type="update" class="form-inline" autosave=true}}
+    <strong>{{this.title}} ({{this.released}})</strong>
+    <br>
+    {{>afQuickField name="downloaded" type="boolean-select" class="input-sm"}}
+  {{/autoForm}}
+  <br>
+</template>

@@ -14,7 +14,8 @@ meteorhacks:npm
 npm-container
 ian:accounts-ui-bootstrap-3
 accounts-password
-aldeed:autoform@=5.3.1
+aldeed:autoform
 aldeed:collection2
 insecure
 percolate:synced-cron
+msavin:mongol
