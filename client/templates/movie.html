@@ -1,8 +1,21 @@
 <template name="movie">
-  {{#autoForm collection="Movies" doc=movieDoc id=formId type="update" class="form-inline" autosave=true}}
-    <strong>{{this.title}} ({{this.released}})</strong>
-    <br>
-    {{>afQuickField name="downloaded" type="boolean-select" class="input-sm"}}
-  {{/autoForm}}
-  <br>
+
+  <div class="col-md-8 col-md-offset-2">
+    <h2><a href="/manage"><i class="fa fa-arrow-left"></i> Return</a></h2>
+
+    <h2>{{this.title}} - ({{this.released}})</h2>
+
+    {{#autoForm collection="Movies" doc=movieDoc id=formId type="update" }}
+      <br>
+        {{> afQuickField name="downloaded"}}
+      <br>
+
+      <button type="submit" class="btn btn-primary">Update</button>
+
+      {{> quickRemoveButton collection="Movies" _id=this._id class="btn btn-danger" onError=onError onSuccess=onSuccess beforeRemove=beforeRemove}}
+
+    {{/autoForm}}
+
+  </div>
+
 </template>

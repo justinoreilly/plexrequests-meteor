@@ -217,3 +217,7 @@ http://bootsnipp.com/snippets/featured/no-more-tables-respsonsive-table
   text-align: left;
   vertical-align: middle;
 }
+
+.checkbox label {
+  font-size: 1em;
+}

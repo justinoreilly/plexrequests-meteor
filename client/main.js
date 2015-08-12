@@ -18,7 +18,7 @@ Router.map(function () {
     this.route('home', {
         path: '/',
     });
-       
+
     if (Meteor.userId()) {
         this.route('settings');
         this.route('about');
@@ -29,6 +29,28 @@ Router.map(function () {
         //this.route('sonarr');
     }
 });
+
+Router.route('movies', {
+  path: '/movies/:_id',
+  template: 'movie',
+  waitOn : function () {
+      return Meteor.subscribe('movies');
+  },
+  data : function () {
+    return Movies.findOne({_id:this.params._id});
+  },
+  action : function () {
+    if (this.ready()) this.render();
+  },
+  onBeforeAction: function(){
+    if (!Meteor.user()) {
+      this.render('home');
+    } else {
+      this.next();
+    }
+  }
+});
+
 
 /*
 Router.route('/settings', {

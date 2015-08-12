@@ -42,9 +42,9 @@ Template.manage.helpers({
                     }
                 },
                 { key: 'user',  label: 'User', cellClass: 'User', },
-                { label: 'Delete',
-                    fn: function () {
-                        return new Spacebars.SafeString('<a href="#" class="delete">X</a>');
+                { key: "_id", label: 'Edit',
+                    fn: function (value) {
+                        return new Spacebars.SafeString('<a href="/movies/' + value + '" class="edit">Edit</a>');
                     }
                 }
               ]
@@ -54,13 +54,9 @@ Template.manage.helpers({
 
 Template.manage.events({
   'click .reactive-table tbody tr': function (event) {
-    event.preventDefault();
-    var request = this;
-    // checks if the actual clicked element has the class `delete`
-    if (event.target.className == "delete") {
-        if (confirm("Confirm you want to delete " + request.title)) {
-            console.log(request._id);
-        }
+    // set the blog post we'll display details and news for
+    if (event.target.className == "edit") {
+        Router.go("/movies/"+this._id);
     }
   }
 });
